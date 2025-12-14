@@ -49,10 +49,10 @@ public class UserDAO {
                     throw ex; // Ném lỗi ra ngoài để controller biết
                 }
                 if (rs.next()) {
-                    String userID = rs.getString("userID");
+                    String realUserID = rs.getString("userID");
                     String fullName = rs.getString("fullName");
                     String roleID = rs.getString("roleID");
-                    user = new UserDTO(userID, fullName, roleID, "***");
+                    user = new UserDTO(realUserID, fullName, roleID, "***");
                 }
             }
         } finally {
