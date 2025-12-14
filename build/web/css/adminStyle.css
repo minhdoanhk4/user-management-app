@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary: #2563eb;       /* Xanh dương tươi */
+    --secondary: #1e293b;     /* Xanh đen (Menu/Header) */
+    --accent: #f59e0b;        /* Vàng cam (Welcome) */
+    --bg-light: #f1f5f9;      /* Nền trang xám rất nhạt */
+    --white: #ffffff;
+    --border: #e2e8f0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: var(--bg-light);
+    color: #334155;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.header-container {
+    background: var(--white);
+    padding: 15px 30px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+    border-left: 5px solid var(--primary);
+}
+
+.welcome-section h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--secondary);
+}
+
+.welcome-section font {
+    color: var(--primary); /* Đổi màu tên user */
+    font-weight: 700;
+}
+
+.center-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.header-search-form input[type="text"] {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    outline: none;
+    width: 200px;
+    transition: 0.2s;
+}
+.header-search-form input[type="text"]:focus{
+    border-color: var(--primary);
+    width: 250px;
+}
+
+.header-search-form input[type="submit"],
+.logout-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.header-search-form input[type="submit"] {
+    background: var(--primary);
+    color: white;
+}
+.header-search-form input[type="submit"]:hover { background: #1d4ed8; }
+
+.logout-btn {
+    background: #cbd5e1;
+    color: #334155;
+}
+.logout-btn:hover { background: #94a3b8; }
+
+/* Table Style */
+.table {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate; /* Để bo góc */
+    border-spacing: 0;
+    margin-top: 10px;
+}
+
+table th {
+    background-color: #f8fafc;
+    color: var(--secondary);
+    text-align: left;
+    padding: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+table tr:last-child td { border-bottom: none; }
+table tbody tr:hover { background-color: #f8fafc; }
+
+/* Inputs in table */
+table input[type="text"] {
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 5px;
+    width: 100%;
+    font-family: inherit;
+    color: inherit;
+    border-bottom: 1px dashed #cbd5e1;
+}
+
+table input[type="text"]:focus {
+    border: 1px solid var(--primary);
+    background: white;
+    border-radius: 4px;
+    outline: none;
+}
+
+table input[type="submit"] {
+    background-color: #10b981; /* Xanh lá cho Update */
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+table a {
+    color: #ef4444; /* Đỏ cho Delete */
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 15px;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    transition: 0.2s;
+    background: #fef2f2;
+    display: inline-block;
+    font-size: 12px;
+}
+
+table a:hover {
+    background: #ef4444;
+    color: white;
+    border-color: #ef4444;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 5px;
+}
+
+.pagination a {
+    color: var(--secondary);
+    padding: 8px 14px;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    font-weight: 500;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #f1f5f9;
+}
+
+.pagination a.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    pointer-events: none;
+}

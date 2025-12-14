@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary: #4F46E5;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --white: #ffffff;
+    --text-dark: #1f2937;
+    --danger: #ef4444;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.boxReset {
+    background: var(--white);
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    border-top: 5px solid var(--primary);
+}
+
+.boxReset h1 {
+    color: var(--text-dark);
+    text-align: center;
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.boxReset p {
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.boxReset input[type="text"],
+.boxReset input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    transition: 0.2s;
+}
+
+.boxReset input[type="text"]:focus,
+.boxReset input[type="password"]:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.btn-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-container input[type="submit"] {
+    background: var(--primary);
+    color: white;
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-container input[type="button"] {
+    background: #f3f4f6;
+    color: #374151;
+    flex: 1;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.warning-text {
+    margin-top: 15px;
+    background: #fef2f2;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 4px solid var(--danger);
+    font-size: 12px;
+    color: #991b1b;
+}
+
+.footer {
+    margin-top: 20px;
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+}

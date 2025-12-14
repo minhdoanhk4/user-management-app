@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary: #4F46E5;       /* Xanh Indigo công nghệ */
+    --primary-hover: #4338ca;
+    --secondary: #10b981;     /* Xanh ngọc tươi tắn */
+    --bg-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); /* Nền tối sang trọng cho trang user */
+    --white: #ffffff;
+    --text-dark: #1f2937;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Header User */
+.header-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    color: var(--white);
+}
+
+.welcome-text span {
+    font-weight: 700;
+    color: var(--secondary);
+    font-size: 1.2rem;
+}
+
+/* Nút Logout */
+.logout-btn {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: var(--white);
+    padding: 8px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background: var(--white);
+    color: var(--text-dark);
+    border-color: var(--white);
+}
+
+.page-title {
+    text-align: center;
+    color: var(--white);
+    margin-bottom: 30px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+/* User Card */
+.user-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4); /* Bóng đậm tạo chiều sâu */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Thanh màu trang trí trên đầu thẻ */
+.user-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+}
+
+.user-card p {
+    font-size: 16px;
+    padding: 15px 0;
+    border-bottom: 1px dashed #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    align-items: center;
+}
+
+.user-card p:last-child {
+    border-bottom: none;
+}
+
+.user-card label {
+    font-weight: 600;
+    color: #64748b;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.user-card span {
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* Khu vực nút Shopping */
+.btn-shopping {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Style cho nút Shopping (input class="shopping") */
+.shopping {
+    background: linear-gradient(90deg, var(--primary), #6366f1);
+    color: var(--white);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.shopping:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(79, 70, 229, 0.5);
+}
+
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+}
