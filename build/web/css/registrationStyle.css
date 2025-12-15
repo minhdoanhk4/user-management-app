@@ -8,6 +8,9 @@
     --danger: #ef4444;
 }
 
+/* =========================================
+   THIẾT LẬP CHUNG & GIAO DIỆN MOBILE (Mặc định)
+   ========================================= */
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
@@ -16,14 +19,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 0;
+    padding: 20px; /* Thêm padding để không bị sát lề trên mobile */
+    box-sizing: border-box;
 }
 
 .container {
     width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
 }
 
 .boxReset {
@@ -31,111 +34,192 @@ body {
     padding: 30px 40px;
     border-radius: 16px;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    width: 400px;
     border-top: 5px solid var(--primary);
+
+    /* Mặc định cho Mobile: Dọc và hẹp */
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    transition: max-width 0.3s ease; /* Hiệu ứng mượt khi đổi màn hình */
 }
 
 .boxReset h1 {
     color: var(--text-dark);
     text-align: center;
     margin-top: 0;
-    font-size: 24px;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 600;
 }
 
+/* Style cho các thẻ <p> chứa input */
 .boxReset p {
+    margin: 0 0 15px 0; /* Khoảng cách dưới mỗi ô nhập */
     font-weight: 500;
-    color: #4b5563;
-    margin-bottom: 5px;
+    color: #374151;
     font-size: 14px;
+    display: flex;       /* Dùng flex để xếp input xuống dòng gọn gàng */
+    flex-direction: column;
+    gap: 6px;            /* Khoảng cách giữa Text label và Input */
 }
 
+/* Input styles */
 .boxReset input[type="text"],
 .boxReset input[type="password"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #d1d5db;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-size: 14px;
     box-sizing: border-box;
-    margin-bottom: 10px;
-    transition: 0.2s;
+    transition: all 0.2s;
+    background: #f9fafb;
 }
 
 .boxReset input[type="text"]:focus,
 .boxReset input[type="password"]:focus {
     border-color: var(--primary);
+    background: #fff;
     outline: none;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
+/* Recaptcha */
+.g-recaptcha {
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Warning Text Box */
+.warning-text {
+    background: #fef2f2;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 4px solid var(--danger);
+    font-size: 12px;
+    color: #991b1b;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Button Container */
 .btn-container {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-container input[type="submit"],
+.btn-container input[type="button"] {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.2s;
 }
 
 .btn-container input[type="submit"] {
     background: var(--primary);
     color: white;
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4);
+}
+.btn-container input[type="submit"]:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
 }
 
 .btn-container input[type="button"] {
     background: #f3f4f6;
-    color: #374151;
-    flex: 1;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
+    color: #4b5563;
 }
-
-.warning-text {
-    margin-top: 15px;
-    background: #fef2f2;
-    padding: 12px;
-    border-radius: 6px;
-    border-left: 4px solid var(--danger);
-    font-size: 12px;
-    color: #991b1b;
+.btn-container input[type="button"]:hover {
+    background: #e5e7eb;
 }
 
 .footer {
     margin-top: 20px;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.8);
     font-size: 12px;
+    text-align: center;
 }
 
-/* Sửa trực tiếp class .boxReset trong code gốc hoặc ghi đè: */
-.boxReset {
-    /* Code cũ... */
-    background: var(--white);
-    /* width: 400px;  <-- XÓA DÒNG CŨ NÀY ĐI hoặc comment lại */ 
-    
-    /* Thay bằng: */
-    width: 90%;         /* Chiếm 90% màn hình */
-    max-width: 400px;   /* Nhưng không quá 400px trên máy tính */
-    box-sizing: border-box; /* Để padding không làm phình khung */
+/* Error text styling (thẻ font) */
+font[color="red"] {
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 2px;
+    display: block; /* Để lỗi xuống dòng nếu cần */
 }
 
-/* Thêm Media Query cho màn hình nhỏ */
+/* =========================================
+   GIAO DIỆN DESKTOP (Màn hình > 768px)
+   Chuyển sang dạng NGANG (2 cột)
+   ========================================= */
+@media (min-width: 768px) {
+
+    /* 1. Mở rộng khung chứa để đủ chỗ cho 2 cột */
+    .boxReset {
+        max-width: 850px;
+    }
+
+    /* 2. Biến thẻ Form thành Grid Layout */
+    .boxReset form {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Chia 2 cột bằng nhau */
+        column-gap: 30px; /* Khoảng cách cột */
+        row-gap: 10px;    /* Khoảng cách hàng */
+    }
+
+    /* 3. Xử lý các phần tử cần nằm FULL 1 dòng */
+
+    /* Recaptcha nằm giữa và full dòng */
+    .boxReset form .g-recaptcha {
+        grid-column: 1 / -1;
+        justify-self: center;
+        margin-top: 10px;
+    }
+
+    /* Warning Text full dòng */
+    .boxReset form .warning-text {
+        grid-column: 1 / -1;
+    }
+
+    /* Button Container full dòng */
+    .boxReset form .btn-container {
+        grid-column: 1 / -1;
+    }
+
+    /* Các thẻ <font> báo lỗi chung nằm trực tiếp trong form (nếu có) */
+    .boxReset form > font {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+
+    /* Tùy chỉnh (Optional): Nếu muốn ô "Confirm Password" (ô lẻ thứ 5) nằm full dòng cho đẹp */
+    /* .boxReset form p:nth-of-type(5) {
+        grid-column: 1 / -1; 
+    } */
+}
+
+/* =========================================
+   TỐI ƯU CHO MOBILE MÀN HÌNH NHỎ (< 480px)
+   ========================================= */
 @media screen and (max-width: 480px) {
     .boxReset {
-        padding: 25px 20px; /* Giảm padding */
+        padding: 20px;
     }
 
     .btn-container {
-        flex-direction: column; /* Xếp nút dọc */
+        flex-direction: column; /* Nút xếp dọc trên đt nhỏ */
     }
 
     .btn-container input[type="submit"],
     .btn-container input[type="button"] {
         width: 100%;
-        padding: 14px; /* Nút to dễ bấm */
+        padding: 14px;
     }
 }
