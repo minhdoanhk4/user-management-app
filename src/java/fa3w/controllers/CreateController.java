@@ -68,14 +68,14 @@ public class CreateController extends HttpServlet {
                 error.setUserIDError("User ID already exists!!!");
             }
 
-            if (userID.length() < 2 || userID.length() > 5) {
+            if (userID.length() < 2 || userID.length() > 10) {
                 checkValidation = false;
-                error.setUserIDError("User ID must be in 2 to 5 character");
+                error.setUserIDError("User ID must be in 2 to 10 character");
             }
 
-            if (fullName.length() < 2 || fullName.length() > 20) {
+            if (fullName.length() < 2 || fullName.length() > 50) {
                 checkValidation = false;
-                error.setFullNameError("Full Name must be in 2 to 20 character");
+                error.setFullNameError("Full Name must be in 2 to 50 character");
             }
 
             if (!password.equals(confirm)) {
