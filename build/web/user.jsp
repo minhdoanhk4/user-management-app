@@ -17,17 +17,13 @@
     </head>
     <body>
 
-        <%
-            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            if (loginUser == null || !"US".equals(loginUser.getRoleID())) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-        %>
+        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.roleID ne 'US'}">
+            <c:redirect url = "login.jsp"/>
+        </c:if>
         <div class="container">
             <div class="header-user">
                 <div class="welcome-text">
-                    Welcome, <span><%= loginUser.getFullName()%></span>
+                    Welcome, <span>${sessionScope.LOGIN_USER.fullName}</span>
                 </div>
 
                 <form action="MainController">
@@ -39,16 +35,16 @@
 
             <div class="user-card"> 
                 <p>
-                    <label>User ID:</label> <span><%= loginUser.getUserID()%></span>
+                    <label>User ID:</label> <span>${sessionScope.LOGIN_USER.userID}</span>
                 </p>
                 <p>
-                    <label>Full Name:</label> <span><%= loginUser.getFullName()%></span>
+                    <label>Full Name:</label> <span>${sessionScope.LOGIN_USER.fullName}</span>
                 </p>
                 <p>
-                    <label>Role ID:</label> <span><%= loginUser.getRoleID()%></span>
+                    <label>Role ID:</label> <span>${sessionScope.LOGIN_USER.roleID}</span>
                 </p>
                 <p>
-                    <label>Password:</label> <span><%= loginUser.getPassword()%></span>
+                    <label>Password:</label> <span>${sessionScope.LOGIN_USER.password}</span>
                 </p>
             </div> 
             <div class ="btn-shopping">
@@ -60,6 +56,5 @@
                 Copyright &copy; 2025 User Management 3W. All rights reserved.
             </div>
         </div>
-
     </body>
 </html>

@@ -4,6 +4,8 @@
     Author     : msi2k
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="fa3w.products.ProductDTO"%>
 <%@page import="fa3w.products.Cart"%>
 <%@page import="fa3w.users.UserDTO"%>
@@ -18,79 +20,74 @@
     </head>
     <body>
         <h1>Check Out Your Cart</h1>
-        <%
-            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            if (loginUser == null || !"US".equals(loginUser.getRoleID())) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-            String error = (String) request.getAttribute("ERROR");
-            if (error != null) {
-        %>
+        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.roleID ne 'US'}">
+            <c:redirect url="login.jsp"/>
+        </c:if>
 
-        <font color="red">
-        <%= error%>
-        </font>
+        <c:if test="${not empty requestScope.ERROR}">
+            <font color="red">
+            ${requestScope.ERROR}
+            </font>
+        </c:if>
 
-        <%
-            }
-        %>
-
-        <%
-            Cart cart = (Cart) session.getAttribute("CART");
-            if (cart != null && cart.getCart().size() > 0) {
-        %>
-
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    int count = 1;
-                    double total = 0;
-                    for (ProductDTO product : cart.getCart().values()) {
-                        total += product.getQuantity() * product.getPrice();
-
-                %>
-                <tr>
-                    <td><%= count++%></td>
-                    <td><%= product.getProductID()%></td>
-                    <td><%= product.getName()%></td>
-                    <td><%= product.getPrice()%></td>
-                    <td><%= product.getQuantity()%></td>
-                    <td><%= product.getPrice() * product.getQuantity()%></td>
-                </tr>
-                <%
-                    }
-                %>
-            </tbody>
-        </table>
+        <c:set var="cart" value="${sessionScope.CART}"/>
+        <c:choose>
+            <c:when test="${not empty cart and not empty cart.cart and cart.cart.size() > 0}">
+                <c:set var="totalAmount" value="0"/>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="product" items="${cart.cart.values()}" varStatus="counter">
+                            <c:set var="itemTotal" value="${product.quantity * product.price}"/>
+                            <c:set var="totalAmount" value="${totalAmount + itemTotal}"/>
+                            <tr>
+                                <td>
+                                    ${counter.count}
+                                </td>
+                                <td>
+                                    ${product.productID}
+                                </td>
+                                <td>
+                                    ${product.name}
+                                </td>
+                                <td>
+                                    <fmt:formatNumber value="${product.price}" pattern="#,##0.00"/>
+                                </td>
+                                <td>
+                                    ${product.quantity}
+                                </td>
+                                <td>
+                                    <fmt:formatNumber value="${itemTotal}" pattern="#,##0.00"/>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
                 <h2>
-                    Total Amount:<%= total%>$
+                    Total Amount: <fmt:formatNumber value="${totalAmount}" pattern="#,##0.00"/>$
                 </h2>
 
-        <form action="MainController" method="POST">
-            <input type="submit" value="Confirm" name="action"/>
-        </form>
+                <form action="MainController" method="POST">
+                    <input type="submit" value="Confirm" name="action"/>
+                </form>
 
-        <form action="MainController">
-            <input type="submit" value="View Cart" name="action" />
-        </form>
-        <%
-        } else {
-        %>
-        <h2>Your cart is empty. <a href="shopping.jsp">Go shopping</a></h2>
-        <%
-            }
-
-        %>
+                <form action="MainController">
+                    <input type="submit" value="View Cart" name="action" />
+                </form>
+                
+            </c:when>
+            <c:otherwise>
+                <h2>Your cart is empty. <a href="shopping.jsp">Go shopping</a></h2>
+            </c:otherwise>
+        </c:choose>
     </body>
 </html>

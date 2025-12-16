@@ -17,16 +17,11 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
     <body>
-        <%-- Giữ nguyên logic xử lý error --%>
-        <%
-            String error = (String) request.getAttribute("ERROR");
-            if (error == null)
-                error = "";
-        %>
+
         <div class="container">
             <div class="boxLogin">
                 <h1>Welcome Back</h1>
-                
+
 
                 <form action="MainController" method="POST">
                     <div style="text-align: left;">
@@ -41,7 +36,7 @@
                         <div class="g-recaptcha" data-sitekey="6LfI_CEsAAAAAAtyYU9q44iS1M9E_yV4-jxZMQoD"></div>
                     </div>
 
-                    <font><%= error%></font>
+                    <font>${requestScope.ERROR}</font>
 
                     <div class="button">
                         <input type="submit" name="action" value="Login" />
@@ -52,7 +47,7 @@
                 <div class="social-login-wrapper">
                     <p style="text-align: center; font-size: 12px; margin-bottom: 10px;">Or continue with</p>
                     <div class="google-btn-wrap">
-                        <%-- Giữ nguyên code Google Button --%>
+
                         <div id="g_id_onload"
                              data-client_id="780471524602-gn88fpdjcvd93meano38qvkuqrc0paqb.apps.googleusercontent.com" 
                              data-context="signin"
@@ -72,7 +67,6 @@
                     </div>
                 </div>
 
-                <%-- Giữ form ẩn --%>
                 <form id="google-token-form" action="MainController" method="POST">
                     <input type="hidden" name="action" value="GoogleLogin" />
                     <input type="hidden" name="token" id="google-token-form-jwt" value="" />
@@ -82,7 +76,6 @@
                     Don't have an account? <a href="MainController?action=SignUp">Sign up</a>
                 </div>
             </div>
-            <%-- Footer --%>
         </div>
     </body>
 </html>

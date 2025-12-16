@@ -386,7 +386,7 @@ table a:hover {
     table td:nth-of-type(4)::before { content: "Role"; }
     table td:nth-of-type(5)::before { content: "Password"; }
     table td:nth-of-type(6)::before { content: "Action"; }
-    table td:nth-of-type(7)::before { content: "Delete"; }
+    table td:nth-of-type(7)::before { content: ""; }
 
     /* Input trong bảng */
     table input[type="text"] {

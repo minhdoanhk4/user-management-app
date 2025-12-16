@@ -35,8 +35,6 @@
                     <h1>Tech<span>Store</span></h1>
                     <div class="user-welcome">
                         Welcome, <strong><%= loginUser.getFullName()%></strong>
-
-
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 <%-- 
-    Document   : resetpass
+    Document   : create
     Created on : Dec 5, 2025, 6:51:37 AM
     Author     : msi2k
 --%>
@@ -17,31 +17,19 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
     <body>
-        <%
-            UserError userError = (UserError) request.getAttribute("USER_ERROR");
-            if (userError == null) {
-                userError = new UserError();
-            }
-        %>
-        <%
-            String error = (String) request.getAttribute("ERROR");
-            if (error == null) {
-                error = "";
-            }
-        %>
         <div class="container">
             <div class="boxReset">
                 <h1>Sign Up</h1>
                 <form action="MainController" method="POST">
                     <p>User ID *
-                        <input type="text" name="txtUserID" value="" required="" 
+                        <input type="text" name="txtUserID" value="${param.txtUserID}" required="" 
                                placeholder="Enter your User ID"/>
-                        <font color="red"><%= userError.getUserIDError()%></font>
+                        <font color="red">${requestScope.USER_ERROR.userIDError}</font>
                     </p>
                     <p>Full Name *
-                        <input type="text" name="txtFullName" value="" required="" 
+                        <input type="text" name="txtFullName" value="${param.txtFullName}" required="" 
                                placeholder="Enter your Full Name"/>
-                        <font color="red"><%= userError.getFullNameError()%></font>
+                        <font color="red">${requestScope.USER_ERROR.fullNameError}</font>
                     </p>
                     <p>New Password *
                         <input type="password" name="txtPassword" value="" required="" 
@@ -50,17 +38,17 @@
                     <p>Confirm Password *
                         <input type="password" name="txtConfirmPass" value="" required="" 
                                placeholder="Confirm new password"/>
-                        <font color="red"><%= userError.getConfirmdError()%></font>
+                        <font color="red">${requestScope.USER_ERROR.confirmError}</font>
                     </p>
                     <p>Role ID *
-                        <input type="text" name="txtRoleID" value="" required="" 
+                        <input type="text" name="txtRoleID" value="${param.txtRoleID}" required="" 
                                placeholder="Enter your Role ID"/>
                     </p>
 
                     <div class="g-recaptcha" data-sitekey="6LfI_CEsAAAAAAtyYU9q44iS1M9E_yV4-jxZMQoD"></div>
 
                     <font color="red">
-                    <%= error%>
+                    ${requestScope.ERROR}
                     </font>
                     <div class="warning-text">
                         <font>
@@ -77,7 +65,7 @@
                 </form>
 
                 <font color="red">
-                <%= userError.getError()%>
+                ${requestScope.USER_ERROR.error}
                 </font>
             </div>
 

@@ -4,6 +4,8 @@
     Author     : msi2k
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page import="fa3w.products.Cart"%>
 <%@page import="fa3w.users.UserDTO"%>
 <%@page import="fa3w.products.ProductDTO"%>
@@ -17,14 +19,9 @@
         <link rel="stylesheet" href="css/cartStyle.css"/>
     </head>
     <body>
-        <%
-            // Kiểm tra đăng nhập
-            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            if (loginUser == null || !"US".equals(loginUser.getRoleID())) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-        %>
+        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.roleID ne 'US'}">
+            <c:redirect url = "login.jsp"/>
+        </c:if>
 
         <div class="container">
             <div class="cart-header-bar">
@@ -33,91 +30,86 @@
                     <span>&#8592;</span> Continue Shopping
                 </a>
             </div>
-
-            <%
-                String error = (String) request.getAttribute("ERROR");
-                if (error != null) {
-            %>
-            <div style="background-color: #fee2e2; color: #ef4444; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #fecaca;">
-                <%= error%>
-            </div>
-            <%
-                }
-            %>
-
-            <%
-                Cart cart = (Cart) session.getAttribute("CART");
-                if (cart != null && cart.getCart().size() > 0) {
-            %>
-            
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th style="width: 5%">No.</th>
-                        <th style="width: 15%">ID</th>
-                        <th style="width: 30%; text-align: left; padding-left: 20px;">Product Name</th>
-                        <th style="width: 15%">Price</th>
-                        <th style="width: 10%">Qty</th>
-                        <th style="width: 15%">Total</th>
-                        <th style="width: 10%" colspan="2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        int count = 1;
-                        double total = 0;
-                        for (ProductDTO product : cart.getCart().values()) {
-                            total += product.getQuantity() * product.getPrice();
-                    %>
-                    <form action="MainController" method="POST">
-                        <tr>
-                            <td><%= count++%></td>
-                            <td style="font-family: monospace; color: #64748b;"><%= product.getProductID()%></td>
-                            <td style="text-align: left; padding-left: 20px; font-weight: 600;"><%= product.getName()%></td>
-                            <td>$<%= String.format("%.2f", product.getPrice())%></td>
-                            <td>
-                                <input type="number" name="quantity" value="<%= product.getQuantity()%>" required="" min="1" class="quantity-input"/>
-                            </td>
-                            <td style="color: var(--primary); font-weight: 700;">
-                                $<%= String.format("%.2f", product.getPrice() * product.getQuantity())%>
-                            </td>
-                            
-                            <td style="padding: 5px;">
-                                <input type="hidden" name="id" value="<%= product.getProductID()%>"/>
-                                <input type="submit" value="Edit" name="action" class="edit-btn"/>
-                            </td>
-                            <td style="padding: 5px;">
-                                <input type="submit" value="Remove" name="action" class="remove-btn"/>
-                            </td>
-                        </tr>
-                    </form>
-                    <%
-                        }
-                    %>
-                </tbody>
-            </table>
-
-            <div class="cart-footer-bar">
-                <div class="cart-summary">
-                    <p>Total Amount: <span class="total-amount">$<%= String.format("%.2f", total)%></span></p>
+            <c:if test="${not empty requestScope.ERROR}">
+                <div style="background-color: #fee2e2; color: #ef4444; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #fecaca;">
+                    ${requestScope.ERROR}
                 </div>
-                
-                <form action="MainController">
-                    <input type="submit" value="Check Out" name="action" class="checkout-btn" />
-                </form>
-            </div>
+            </c:if>
 
-            <%
-            } else {
-            %>
-                <div class="empty-cart-message">
-                    <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" alt="Empty Cart" style="width: 100px; opacity: 0.5; margin-bottom: 20px;">
-                    <p>Your cart is currently empty.</p>
-                    <a href="MainController?action=Search+Product" style="color: var(--primary); text-decoration: none; font-weight: 600;">Go to Store</a>
-                </div>
-            <%
-                }
-            %>
+            <c:set var="cart" value="${sessionScope.CART}"/>
+            <c:choose>
+                <c:when test="${not empty cart and not empty cart.cart and cart.cart.size() > 0}">
+                    <c:set var="totalAmount" value="0"/>
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">No.</th>
+                                <th style="width: 15%">ID</th>
+                                <th style="width: 30%; text-align: left; padding-left: 20px;">Product Name</th>
+                                <th style="width: 15%">Price</th>
+                                <th style="width: 10%">Qty</th>
+                                <th style="width: 15%">Total</th>
+                                <th style="width: 10%" colspan="2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="product" items="${cart.cart.values()}" varStatus="counter">
+                                <c:set var="itemTotal" value="${product.price * product.quantity}"/>
+                                <c:set var="totalAmount" value="${totalAmount + itemTotal}"/>
+                            <form action="MainController" method="POST">
+                                <tr>
+                                    <td>${counter.count}</td>
+                                    <td style="font-family: monospace; color: #64748b;">
+                                        ${product.productID}
+                                    </td>
+                                    <td style="text-align: left; padding-left: 20px; font-weight: 600;">
+                                        ${product.name}
+                                    </td>
+                                    <td>
+                                        $<fmt:formatNumber value="${product.price}" pattern="#,##0.00"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="quantity" value="${product.quantity}" required="" min="1" class="quantity-input"/>
+                                    </td>
+                                    <td style="color: var(--primary); font-weight: 700;">
+                                        $<fmt:formatNumber value="${itemTotal}" pattern="#,##0.00"/>
+                                    </td>
+
+                                    <td style="padding: 5px;">
+                                        <input type="hidden" name="id" value="${product.productID}"/>
+                                        <input type="submit" value="Edit" name="action" class="edit-btn"/>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="submit" value="Remove" name="action" class="remove-btn"/>
+                                    </td>
+                                </tr>
+                            </form>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+
+                    <div class="cart-footer-bar">
+                        <div class="cart-summary">
+                            <p>Total Amount: 
+                                <span class="total-amount">
+                                    $<fmt:formatNumber value="${totalAmount}" pattern="#,##0.00"/>
+                                </span>
+                            </p>
+                        </div>
+
+                        <form action="MainController">
+                            <input type="submit" value="Check Out" name="action" class="checkout-btn" />
+                        </form>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="empty-cart-message">
+                        <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" alt="Empty Cart" style="width: 100px; opacity: 0.5; margin-bottom: 20px;">
+                        <p>Your cart is currently empty.</p>
+                        <a href="MainController?action=Search+Product" style="color: var(--primary); text-decoration: none; font-weight: 600;">Go to Store</a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
-</body>
+    </body>
 </html>

@@ -4,6 +4,7 @@
     Author     : msi2k
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.List"%>
 <%@page import="fa3w.users.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,31 +18,20 @@
         <link rel="stylesheet" href="css/adminStyle.css"/>
     </head>
     <body>
-        <%-- Giữ nguyên logic kiểm tra quyền --%>
-        <%
-            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            if (loginUser == null || !"AD".equals(loginUser.getRoleID())) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-            String search = request.getParameter("txtSearchValue");
-            if (search == null) {
-                search = "";
-            }
-            String error = (String) request.getAttribute("ERROR");
-            if (error == null)
-                error = "";
-        %>
+
+        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.roleID ne 'AD'}">
+            <c:redirect url="login.jsp"/>
+        </c:if>
         <div class="container">
             <div class="header-container">
                 <div class="welcome-section">
                     <h1>Dashboard</h1>
-                    <span style="font-size: 14px; opacity: 0.9">Hello, <font><%= loginUser.getFullName()%></font></span>
+                    <span style="font-size: 14px; opacity: 0.9">Hello, <font>${sessionScope.LOGIN_USER.fullName}</font></span>
                 </div>
 
                 <div class="center-actions">
                     <form action="MainController" class="header-search-form">
-                        <input type="text" name="txtSearchValue" value="<%= search%>" placeholder="Search user..." required="" />
+                        <input type="text" name="txtSearchValue" value="${param.txtSearchValue}" placeholder="Search user..." required="" />
                         <input type="submit" value="Search" name="action" />
                     </form>
                     <form action="MainController">
@@ -50,92 +40,87 @@
                 </div>
             </div>
 
-            <% if (error.length() > 0) {%>
             <div style="background: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 8px; margin-bottom: 20px;">
-                <%= error%>
+                ${requestScope.ERROR}
             </div>
-            <% } %>
 
             <div class="table">
                 <%-- Giữ nguyên logic hiển thị bảng --%>
-                <%
-                    List<UserDTO> listUser = (List<UserDTO>) request.getAttribute("LIST_USER");
-                    if (listUser != null && listUser.size() > 0) {
-                %>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>User ID</th>
-                            <th>Full Name</th>
-                            <th>Role</th>
-                            <th>Password</th>
-                            <th>Update</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            int count = 1;
-                            for (UserDTO user : listUser) {
-                        %>
-                    <form action="MainController" method="POST">
-                        <tr>
-                            <td><%= count++%></td>
-                            <td>
-                                <input type="text" name="userID" value="<%= user.getUserID()%>" readonly="" style="border:none; border-bottom: none; color: #64748b; font-weight: 600;"/>
-                            </td>
-                            <td><input type="text" name="fullName" value="<%= user.getFullName()%>" required=""/></td>
-                            <td><input type="text" name="roleID" value="<%= user.getRoleID()%>" required="" style="width: 50px; text-align: center;"/></td>
-                            <td><%= user.getPassword()%></td> <td>
-                                <input type="submit" value="Update" name="action" />
-                                <input type="hidden" name="txtSearchValue" value="<%= search%>" />
-                            </td>
-                            <td>
-                                <a href="MainController?action=Delete&userID=<%= user.getUserID()%>&txtSearchValue=<%= search%>" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
-                            </td>
-                        </tr>
-                    </form>
-                    <% } %>
-                    </tbody>
-                </table>
+                <c:if test="${requestScope.LIST_USER != null}">
+                    <c:if test="${not empty requestScope.LIST_USER}">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>User ID</th>
+                                    <th>Full Name</th>
+                                    <th>Role</th>
+                                    <th>Password</th>
+                                    <th>Update</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="user" varStatus="counter" items="${requestScope.LIST_USER}">
+                                <form action="MainController" method="POST">
+                                    <tr>
+                                        <td>${counter.count}</td>
+                                        <td>
+                                            <input type="text" name="userID" value="${user.userID}" readonly="" style="border:none; border-bottom: none; color: #64748b; font-weight: 600;"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="fullName" value="${user.fullName}" required=""/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="roleID" value="${user.roleID}" required="" style="width: 50px; text-align: center;"/>
+                                        </td>
+                                        <td>${user.password}</td> <td>
+                                            <input type="submit" value="Update" name="action" />
+                                            <input type="hidden" name="txtSearchValue" value="${param.txtSearchValue}" />
+                                        </td>
+                                        <td>
+                                            <c:url var="deleteLink" value="MainController">
+                                                <c:param name="action" value="Delete"/>
+                                                <c:param name="userID" value="${user.userID}"/>
+                                                <c:param name="txtSearchValue" value="${param.txtSearchValue}"/>
+                                            </c:url>
+                                            <a href="${deleteLink}">Delete</a>
+                                        </td>
+                                    </tr>
+                                </form>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:if>
+                </c:if>
 
                 <%-- Pagination giữ nguyên logic, class css đã được update --%>
                 <div class="pagination">
-                    <%
-                        Integer endPage = (Integer) request.getAttribute("endPage");
-                        Integer currentPage = (Integer) request.getAttribute("currentPage");
-                        String currentSearch = (String) request.getAttribute("txtSearchValue");
-                        if (endPage == null) {
-                            endPage = 0;
-                        }
-                        if (currentPage == null) {
-                            currentPage = 1;
-                        }
-                        if (currentSearch == null) {
-                            currentSearch = "";
-                        }
+                    <c:set var="endPage" value="${requestScope.endPage != null ? requestScope.endPage : 0}"/>
+                    <c:set var="currentPage" value="${requestScope.currentPage != null ? requestScope.currentPage : 1}"/>
+                    <c:set var="searchValue" value="${param.txtSearchValue}"/>
 
-                        if (endPage > 1) {
-                            if (currentPage > 1) {
-                    %>
-                    <a href="MainController?action=Search&index=<%=currentPage - 1%>&txtSearchValue=<%=currentSearch%>">&laquo;</a>
-                    <%      }
-                        for (int i = 1; i <= endPage; i++) {
-                            String activeClass = (currentPage == i) ? "active" : "";
-                    %>
-                    <a href="MainController?action=Search&index=<%=i%>&txtSearchValue=<%=currentSearch%>" class="<%=activeClass%>"><%=i%></a>
-                    <%      }
-                        if (currentPage < endPage) {
-                    %>
-                    <a href="MainController?action=Search&index=<%=currentPage + 1%>&txtSearchValue=<%=currentSearch%>">&raquo;</a>
-                    <%      }
-                        }
-                    %>
+                    <c:if test="${endPage > 1}">
+                        <c:if test="${currentPage > 1}">
+                            <a href="MainController?action=Search&index=${currentPage - 1}&txtSearchValue=${searchValue}">&laquo;</a>
+                        </c:if>
+
+                        <c:forEach begin="1" end="${endPage}" var="i">
+                            <c:choose>
+                                <c:when test="${currentPage == i}">
+                                    <a href="MainController?action=Search&index=${i}&txtSearchValue=${searchValue}" class="active">${i}</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="MainController?action=Search&index=${i}&txtSearchValue=${searchValue}">${i}</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+
+                        <c:if test="${currentPage < endPage}">
+                            <a href="MainController?action=Search&index=${currentPage + 1}&txtSearchValue=${searchValue}">&raquo;</a>
+                        </c:if>
+                    </c:if>
                 </div>
-                <%
-                    }
-                %>
             </div>
         </div>
     </body>
